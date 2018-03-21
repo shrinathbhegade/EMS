@@ -4,3 +4,4 @@ The validations are not working for the gender which is a kendo control.
 Null checks are missing in DAL.
 When trying to upadte employee, the employee is eliminated from supervisors and new datasource is set to dropdown. Now what if user cancels operation and tries to add new empoyee. The eliminated employee would not be available.
 Validations are not well formatted for error messages, problem of kendo.
+Exceptions could be managed properly.
