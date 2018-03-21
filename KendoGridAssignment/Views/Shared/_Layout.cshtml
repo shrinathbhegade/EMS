@@ -1,0 +1,46 @@
+﻿@using Kendo.Mvc.UI
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <title>App Home</title>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/kendo")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+
+    <div id="container">
+        <div id="banner">
+            <div id='bannertitle'>Employee Management System</div>
+        </div>
+
+        @*<div id="outer">*@
+            @*<div id="inner">*@
+                <div id="left" style="background-color:#f5491a">
+                    <div class="verticalmenu">
+                        <ul>
+                            <li><a href='@Url.Action("GetGridData", "Home")' class="btn btn-primary">Employee Register</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div id="body">
+                    <h2></h2>
+
+
+
+
+                    @RenderBody()
+
+
+
+                </div><!-- end content -->
+            @*</div>*@<!-- end inner -->
+        @*</div>*@<!-- end outer -->
+        <div id="footer"><h1 style="color:Black">copyrights&copy;EMS using Kendo</h1></div>
+    </div><!-- end container -->
+</body>
+</html>

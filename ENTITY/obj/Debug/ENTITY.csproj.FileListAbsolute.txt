@@ -1,0 +1,4 @@
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\ENTITY\bin\Debug\ENTITY.dll
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\ENTITY\bin\Debug\ENTITY.pdb
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\ENTITY\obj\Debug\ENTITY.dll
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\ENTITY\obj\Debug\ENTITY.pdb

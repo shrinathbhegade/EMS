@@ -1,0 +1,493 @@
+﻿@using Kendo.Mvc.UI;
+@using KendoGridAssignment.Models
+@model DataModel
+<style>
+    .fa-pencil-alt {
+        background-color: white;
+        color: black;
+        border: 1px solid #008CBA;
+    }
+
+        .fa-pencil-alt:hover {
+            background-color: #008CBA;
+            color: white;
+        }
+
+    .fa-times {
+        background-color: white;
+        color: red;
+        border: 1px solid black;
+    }
+
+        .fa-times:hover {
+            background-color: black;
+            border-color: red;
+        }
+</style>
+<style>
+    .remove_field {
+        background-color: white;
+        color: black;
+        border: 1px solid #e7e7e7;
+        float:inherit;
+        margin-left:5px;
+    }
+        .remove_field:hover {
+        background-color:red;
+        border-bottom-color:black;
+        }
+
+    .add_field_button {
+        background-color: white; 
+        color: black; 
+        border: 2px solid #4CAF50;
+    }
+        .add_field_button:hover {
+             background-color: #4CAF50;
+             color: white;
+        }
+
+    #delete {
+        align-content: center;
+    }
+
+    .k-grid th.k-header{
+        /*background-color:DarkOrange;
+        font:bolder;
+        text-align:center;
+        text-decoration:solid;*/
+    }
+    .k-grid table {
+        
+        /*width: 100%;
+        margin: 0;
+        max-width: none;
+        border-collapse: separate;
+        empty-cells: show;
+        background-color: MistyRose;
+        border-width: medium;
+        border-color:black;
+        font-family:Arial;
+        border:medium;*/
+    }
+    .k-window-content .k-content {
+        margin-top:0px;
+    
+    }
+
+
+
+    div.k-window-content {
+        /*position: relative;
+        height: 100%;
+        padding: .58em;
+        overflow: inherit;
+        outline: 0;
+        background-color: white;*/
+    }
+
+    .k-window-title {
+        /*position: center;
+        left: .44em;
+        right: .44em;
+        overflow: hidden;
+        border-color: black;
+        cursor: default;
+        text-overflow: ellipsis;
+        background-color: darkorange;*/
+    }
+
+
+    #universalbutton.k-button {
+       position:relative;    
+    }
+
+    #cancelbutton.k-button {
+        position:relative;
+        color: #2e2e2e;
+        border-color: #c5c5c5;
+        background-color: lightcoral;
+    }
+
+
+    .numeric {
+        text-align: right;
+        color: red;
+    }
+
+    .text {
+        text-align: center;
+    }
+</style>
+
+@{
+    ViewBag.Title = "GetGridData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@(Html.Kendo().Grid<Employee>(Model.employees)
+         .Name("grid")
+         .Columns(columns =>
+         {
+         columns.Template(@<text></text>).Title("Delete").ClientTemplate("<button id='delete' class='fas fa-times' onClick='DeleteMode(#=ID#)'/>").HtmlAttributes(new { @class = "text" });
+         columns.Template(@<text></text>).Title("Edit").ClientTemplate("<button id='ed' name='edtbtn'class='fas fa-pencil-alt'onClick='EditMode(#=ID#)'/>").HtmlAttributes(new { @class = "text" });
+             columns.Bound(Model => Model.ID).Visible(false);
+             columns.Bound(Model => Model.NAME);
+             columns.Bound(Model => Model.DESIGNATION_ID).Visible(false);
+             columns.Bound(Model => Model.DESIGNATION);
+             columns.Bound(Model => Model.GENDER).ClientTemplate("#= GENDER=='M' ? 'MALE' : 'FEMALE'#");
+             columns.Bound(Model => Model.DATE_OF_BIRTH).Title("Birth Date").ClientTemplate("#= kendo.toString(kendo.parseDate(DATE_OF_BIRTH),'dd/MM/yyyy') #");
+             columns.Template(@<text></text>).Title("Age").ClientTemplate("#= getAge(DATE_OF_BIRTH) #").HtmlAttributes(new { @class = "numeric" });
+         columns.Bound(Model => Model.DEPARTMENT_ID).Visible(false);
+         columns.Bound(Model => Model.DEPARTMENT);
+         columns.Bound(Model => Model.EXPERIENCE).HtmlAttributes(new { @class = "numeric" });
+         columns.Template(@<text></text>).Title("Experience Level").ClientTemplate("#= EXPERIENCE < 1 ? \"<i class='fas fa-square' style='color:red'></i>\"" +
+                                          ": EXPERIENCE < 5 ? \"<i class='fas fa-square' style='color:yellow'></i>\" : EXPERIENCE < 10 ? \"<i class='fas fa-square'style='color:green'></i>\"" +
+                                          ": \"<i class='fas fa-square'style='color:blue'></i>\" #").HtmlAttributes(new { @class = "text" }); // \" is used for breaking the sequence
+             columns.Bound(Model => Model.EMAIL_ID).Title("Email Id");
+             columns.Bound(Model => Model.CONTACT_NUMBER).Title("Contact No.");
+             columns.Bound(Model => Model.ADDRESS);
+             columns.Bound(Model => Model.SKILLS);
+             columns.Bound(Model => Model.SUPERVISOR_ID).Visible(false);
+             columns.Bound(Model => Model.SUPERVISOR);
+             columns.Bound(Model => Model.INSERTED_BY).Visible(false);
+             columns.Bound(Model => Model.INSERTED_ON).Visible(false);
+             columns.Bound(Model => Model.UPDATED_BY).Visible(false);
+             columns.Bound(Model => Model.UPDATED_ON).Visible(false);
+         })
+         .ToolBar(toolBar => toolBar.Template("<button id = 'addemployee' class='fas fa-plus' style='border:none;color:#2c6df3'></button>"))
+         .HtmlAttributes(new { style = "height: 600px;" })
+         .Scrollable()
+         .Selectable(selectable => selectable.Mode(GridSelectionMode.Single).Type(GridSelectionType.Row))
+         .Pageable(p => p.PageSizes(new int[] { 5,8, 10, 15, 20 }))
+         .DataSource(DataSource => DataSource
+                .Ajax()
+                .PageSize(10)
+                .ServerOperation(false))
+         .AllowCopy(true)
+)
+
+@(Html.Kendo().Window()
+    .Name("window")
+    .Title("Register New Employee")
+    .Content(Html.Partial("_AddPartial", Model).ToHtmlString())
+    .Modal(true)
+    .Draggable()
+    .Resizable()
+    .Width(800)
+    .Height(600)
+    .Actions(actions => actions.Pin().Minimize().Maximize().Close())
+    .Events(ev => ev.Close("ClearFields"))
+    .Visible(false)
+
+)
+
+<script type="text/javascript">
+    var viewMode = false;                                    //global variable to set or reset non editable mode
+    var fieldCount;
+
+    $(document).ready(function () {
+        var wnd = $("#window").data("kendoWindow");
+
+        $("#grid").on("dblclick", "tr", function () {       //jquery double click listener on the grid
+            var grid = $("#grid").data("kendoGrid");
+            var result = grid.dataItem(grid.select());      //get the row item data
+            viewMode = true;
+            SetFields(result, viewMode);                     //set fields with acquired data
+
+        });
+
+        $("#addemployee").click(function () {                                   //function to listen to click on + icon on grid
+                                                                                //if clicked then open in center and set title
+            NormalMode();
+            ClearFields();
+            wnd.open();
+            wnd.center();
+            wnd.title("Register New Employee");
+            $("#universalbutton").text("Save");                                 //set value as save for new employee
+            // ClearFields();
+        });
+
+        $('#universalbutton').click(function () {                               //function call save or update employee depending upon button clicked
+            Save($('#universalbutton').text());
+        });
+
+        $("#cancelbutton").click(function () {
+            ClearFields();
+            wnd.close();
+        });
+    });
+
+    function SetFields(result,viewMode) {                   //Function to set values of the fields on the window for viewmode and edit
+        NormalMode();                                       //Call normal mode to enable all fields
+        var wnd = $("#window").data("kendoWindow");         // Open the window which renders partial window
+        wnd.center();
+        wnd.open();
+        // Set all the fields of the partial view
+        $("#identity").data("kendoNumericTextBox").value(result.ID);
+        $("#name").val(result.NAME);
+        $("#designation").data("kendoDropDownList").text(result.DESIGNATION);
+
+        $("input[name=gender][value=" + result.GENDER + "]").prop('checked', true);
+        $("#department").data("kendoAutoComplete").value(result.DEPARTMENT);
+        $("#departmentid").val(result.DEPARTMENT_ID);
+        $("#supervisor").data("kendoDropDownList").text(result.SUPERVISOR);
+        SetSkills(result.SKILLS);
+       // $("#skills").val(result.SKILLS);
+        $("#contact").val(result.CONTACT_NUMBER);
+        $("#experience").data("kendoNumericTextBox").value(result.EXPERIENCE);
+        $("#address").val(result.ADDRESS);
+        $("#email").val(result.EMAIL_ID);
+        $("#dob").val(kendo.toString(kendo.parseDate(result.DATE_OF_BIRTH), 'MM/dd/yyyy'));
+
+        if (viewMode) {                                     //Check for viewmode and set title accordingly
+            wnd.title("Employee Details");
+            ViewMode();
+        }
+        else {
+            wnd.title("Edit Employee");                     //Set value of button for update operation
+            $("#universalbutton").text("Update");
+        }
+
+    }   // end of function SetFields
+
+    /*function EliminateSupervisor(supervisor)
+    //{
+    //    var sl=$("#supervisor").data("kendoDropDownList");
+    //    var data=sl.dataSource.data();
+    //    for(var i=0; i<data.length; i++)
+    //    {
+    //        if(data[i].NAME===supervisor){
+    //            alert(data[i].ID);
+    //            sl.dataSource.remove(data[i]);
+    //        }
+
+    //    }
+    //    var span = sl.span;
+
+    //    span.css("background-color","GOLD");
+
+    //}*/
+    function SetSkills(skill)
+    {
+        
+        var index=0;
+        fieldCount=0;
+        $.each(skill.split(","), function(index, item) {
+            fieldCount++;
+            index++;
+            var wrapper = $(".input_fields_wrap");
+            $(".input_fields_wrap :nth-child("+fieldCount+")").children(".k-textbox").val(item);
+            $(wrapper).append('<div><input type="text" style="margin-left:43px;padding-bottom:0.5em;" name="skills" class="k-textbox" required="required" pattern="[a-zA-Z]+(\\s+[a-zA-Z]+)*"/>&nbsp;<button class="remove_field"><i class="far fa-times-circle"></i></button></div>');
+            
+        });
+        $(".input_fields_wrap div:last-child").remove();
+      
+    }
+
+    function ClearFields(){
+        //$("input:not(.k-radio)").val("");                               //all the input controls but not the specified i.e. control with k-radio as a class
+        $("#name").val("");
+        $("#contact").val("");
+        $("#email").val("");
+        var exp = $("#experience").data("kendoNumericTextBox");
+        exp.value(null);
+        $("#dob").val("");
+        console.log($(".input_fields_wrap"))
+        fieldCount=1;                                                    //resest the number of skills fields
+        $(".input_fields_wrap div:not(:first-child)").remove();
+        $("#skills").val("");
+        $("#identity").val("");
+        $("#department").data("kendoAutoComplete").value("");
+        $("#supervisor").data("kendoDropDownList").text("");
+        $("#designation").data("kendoDropDownList").text("");
+        $("input[name=gender]").removeAttr("checked");                  //Remove checked attrib and set them clear
+        $("#address").val("");
+        $("button").prop("disabled",false);
+    }
+
+    function ViewMode()
+    {
+        $("input").attr("disabled", true);
+        var dep = $("#department").data("kendoAutoComplete");
+        dep.readonly();
+        var sup = $("#supervisor").data("kendoDropDownList");
+        sup.readonly();
+        var des = $("#designation").data("kendoDropDownList");
+        des.readonly();
+        $("#address").attr("readonly", true);
+        $("#dob").data("kendoDatePicker").readonly(true);
+        $("#bottom").hide();
+        $("button").prop("disabled",true);
+    }
+
+    function NormalMode()
+    {
+        $("input").attr("disabled", false);
+        var dep = $("#department").data("kendoAutoComplete");
+        dep.enable(true);
+        var sup = $("#supervisor").data("kendoDropDownList");
+        sup.enable(true);
+        var des = $("#designation").data("kendoDropDownList");
+        des.enable(true);
+        $("#address").attr("readonly", false);
+        $("#dob").data("kendoDatePicker").readonly(false);
+      
+        $("#bottom").show();
+        $("button").prop("disabled",false);
+
+    }
+
+
+
+    //Function to get the details of employee through ajax call to edit
+    function EditMode(ID) {
+        alert(ID)
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetEmployee","Home")',
+            dataType: "json",
+            contentType: 'application/json',
+            data: "{ id:" + ID + "}",
+            success: function (result) {
+                if (result.isSuccess==true) {
+                    var res = result.data;
+                    var supervisor_control=$("#supervisor").data("kendoDropDownList");
+                    supervisor_control.setDataSource(result.svsource);
+                    //EliminateSupervisor(res.NAME);
+                    SetFields(res, false);                            //set fields with record of selected employee and viewmode disabled
+                }
+                else {
+                    alert("There was problem fetching data about selected employee. The record may have been deleted, please refresh the page");
+                    alert("Additional Info"+result.data)
+
+                }
+            }
+        });
+    }
+
+    function DeleteMode(ID) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("DeleteEmployee","Home")',
+            contentType: 'application/json',
+            dataType: "json",
+            data: "{ id:" + ID + "}",
+            success: function (result) {
+                if(result.isSuccess==true)
+                    {
+                    Refresh_Fun();
+                    alert(result.message)
+                    }
+                else
+                    alert(result.message)
+            }
+        });
+    }
+
+    function Refresh_Fun() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetUpdatedData", "Home")',
+            dataType: "json",
+            traditional: true,
+            success: function (result) {
+                console.log(result)
+                if (result) {
+                    if (result.isSuccess) {
+                        $("#grid").data("kendoGrid").dataSource.data(result.data);
+                        var supervisor_control=$("#supervisor").data("kendoDropDownList");
+                        supervisor_control.setDataSource(result.svsource);
+                    }
+                    else {
+
+                    }
+                }
+            }
+        });
+    }
+
+
+
+</script>
+
+<script type="text/javascript">                                                     //Validations and age calculation
+
+   
+    
+
+    //$(document).ready(function () {
+    //    $('#universalbutton').click(function (e) {
+    //        // Initializing Variables With Form Element Values
+    //        var firstname = $('#name').val();
+    //        var addr = $('#address').val();
+    //        var email = $('#email').val();
+    //        var dep=$('#department').val();
+
+    //        // Initializing Variables With Regular Expressions
+    //        var name_regex = /^[a-zA-Z]+$/;
+    //      //  var email_regex = /^[\w\-\.\+]+\[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;;
+    //        var add_regex = /^[0-9a-zA-Z]+$/;
+
+    //        // To Check Empty Form Fields.
+    //        if (firstname.length == 0) {
+    //            alert("All fields are mandatory")
+    //            //$('#head').text("* All fields are mandatory *"); // This Segment Displays The Validation Rule For All Fields
+    //            $("#name").focus();
+    //            return false;
+    //        }
+    //            // Validating Name Field.
+    //        else if (!firstname.match(name_regex) || firstname.length == 0) {
+    //            $('#p1').text("* For your name please use alphabets only *"); // This Segment Displays The Validation Rule For Name
+    //            $("#firstname").focus();
+    //            return false;
+    //        }
+
+    //            // Validating Email Field.
+    //        else if (!email.match(email_regex) || email.length == 0) {
+    //            $('#p3').text("* Please enter a valid email address *"); // This Segment Displays The Validation Rule For Email
+    //            $("#email").focus();
+    //            return false;
+    //        }
+    //            // Validating Select Field.
+    //        else if (dep == "--Select Department--") {
+    //            $('#p4').text("* Please Choose any one option"); // This Segment Displays The Validation Rule For Selection
+    //            $("#state").focus();
+    //            return false;
+    //        }
+    //            // Validating Address Field.
+    //        else if (!addr.match(add_regex) || addr.length == 0) {
+    //            $('#p5').text("* For Address please use numbers and letters *"); // This Segment Displays The Validation Rule For Address
+    //            $("#addr").focus();
+    //            return false;
+    //        }
+    //           else {
+    //            alert("Form Submitted Successfuly!");
+    //            return true;
+    //        }
+    //    });
+    //});
+
+    
+
+    function getAge(dobstring) {
+        var dob = kendo.toString(kendo.parseDate(dobstring));
+        var age_years = @DateTime.Now.Year-dob.getFullYear();
+        var mon_then=dob.getMonth()+1;
+        var mon_now=@DateTime.Now.Month;
+        var age_month;
+        if(mon_now < mon_then)                                  //This can be more precise i.e. upto day of month
+        {                                                       //Checking if dob month has passed or yet to come and setting age accordingly
+            age_month=12-(mon_then-mon_now);
+            age_years--;
+        }
+        else
+        {
+            age_month=mon_now-mon_then;
+        }
+        var dage=parseFloat(age_years+"."+age_month);           //temporary fix to return age in decimal
+        return dage;
+    }
+
+
+    
+</script>        

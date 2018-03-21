@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<body>    
+    <br /><p style="font-family:'Brush Script MT';font-size:15px;color:red">@Html.Raw(ViewBag.Message)</p><br />
+    <p style="font-family:'Brush Script MT';font-size:15px;color:red">@Html.Raw(ViewBag.Error)</p>   
+    <br/><br/>
+    <fieldset style="border:none;color:coral;">
+        <legend style="color:coral;padding-left:150px;font-size:17px">Welcome</legend>
+        
+            <div style="padding-left:200px;padding-bottom:2px;padding-top:2px;font-size:15px;color:mediumorchid;">
+                
+                <b>Hello There</b><br /><p> <u>@DateTime.Now</u> is the current date time in your area. </p><br />
+                <p>We are happy to say that the initial release for EMS is successful</p>
+                <p>However it is still in developement so you may find some bugs.</p>
+                <p>If you find any of them please free to cry out loud and we will get back to you.</p>
+                <p>Hope we have created something useful, We will keep you posted with new functionalities !</p>
+            </div>
+    </fieldset>
+
+    <fieldset style="border:none;color:coral;">
+        <legend style="padding-left:150px;font-size:17px">Get Started</legend>
+            <div style="padding-left:200px;padding-bottom:2px;padding-top:2px;font-size:13px;color:deeppink;">
+                <b>Please Click The Button In The Left Panel To View All The Employees Along With Details</b><br />
+                <p>You can add new employee record, edit and delete employee. </p>
+            </div>
+    </fieldset>
+   
+</body>
+
+
+@*<script>
+    var mylist={model:@Html.Raw(Model!=null ? Json.Encode(Model):null)}
+       console.log(mylist);
+       </script>*@ 

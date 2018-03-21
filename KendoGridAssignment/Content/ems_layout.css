@@ -1,0 +1,128 @@
+body {
+ /*background: #E7E7E7 url('../Content/Images/body.jpg') top left;*/
+font-size: 11px;
+font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
+color:#564b47;
+padding:0px;
+margin:0px;
+}
+a {color: #DB7093;}
+a:visited {color:#c43300;}
+a:hover {color: #c43300;}
+a:active { color:#000000;}
+
+h1 {
+font-size: 11px;
+text-transform:uppercase;
+
+/*border-top:1px solid #564b47;
+border-bottom:1px solid #564b47;*/
+/*padding:5px 15px;*/
+margin:0px }
+
+h2 {
+color: #0026ff;
+font-size:20px;
+font-weight: normal;
+padding: 5px 10px;
+margin:0px;}
+
+img.download {vertical-align:middle;}
+
+/* ----------container to center the layout-------------- */
+#container {
+width: auto;
+margin-left: auto;
+margin-right: auto;
+height:auto;
+background-color:#c43300;
+background: #E8E8E8 url('../Content/Images/menubottom.jpg') repeat-y top left;
+/*border:5px solid #0094ff;*/
+}
+
+/* ----------banner for logo-------------- */
+#banner {
+height:100px;
+
+text-align: center;
+background:  url('../Content/Images/header.jpg') repeat;
+background-color: #08554b;
+
+padding: 0px;
+margin: 0px;
+}
+#banner img {padding:0px 0px;} 
+#bannertitle{padding-top:20px;font-size:2em;font-weight:bold;color:black;}
+
+/* -----------------content--------------------- */
+#body {
+
+background:#ffffff  url('../Content/Images/content.jpg') no-repeat top right;
+padding: 0px;
+margin-left: 150px;
+margin-right: 0px;
+height:auto;
+}
+div#body { 
+min-height:600px;
+/*height:expression(this.scrollHeight > 600 ? "auto":"600px"); */
+}
+
+/*p, pre{
+padding: 5px 10px;
+margin:0px;
+}*/
+
+/* --------------left navi------------- */
+#left {
+float: left;
+width: 100px;
+margin: 0px;
+padding: 0px;
+background:#E8E8E8;
+ height:auto;
+}
+
+/* -----------footer--------------------------- */
+#footer {
+clear: both;
+margin: 0px;
+padding:0px;
+background-color:azure;
+height:35px;
+text-align: right; 
+
+}
+ #footer h1 a{
+ color:#FFFFFF;
+ }
+  #footer h1{
+  padding:5px 5px 0px 0px;
+  }
+ /**********vertical menu***************/
+.verticalmenu ul{
+ list-style:none;
+/*list-style-image: url("bullet.gif")*/
+ padding: 6px;
+ margin: 0px;
+}
+
+ .verticalmenu li, a:link, .verticalmenu a:visited  {
+   display: block;
+   font: bold 1.1em Verdana, Arial, Helvetica, sans-serif;
+   color: black;
+   text-decoration: none;
+   text-align: left;
+   
+   width: 140px;
+   height: auto;
+ }
+
+ .verticalmenu a:hover{
+   color: white;
+ }
+
+
+
+
+ 

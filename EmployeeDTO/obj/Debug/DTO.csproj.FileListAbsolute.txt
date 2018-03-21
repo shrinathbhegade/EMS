@@ -1,0 +1,4 @@
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\EmployeeDTO\bin\Debug\EmployeeDTO.dll
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\EmployeeDTO\bin\Debug\EmployeeDTO.pdb
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\EmployeeDTO\obj\Debug\EmployeeDTO.dll
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\EmployeeDTO\obj\Debug\EmployeeDTO.pdb

@@ -1,0 +1,362 @@
+﻿@using KendoGridAssignment.Models
+@using Kendo.Mvc.UI
+@model DataModel
+@Scripts.Render("~/bundles/bootstrap")
+@{
+    Layout = null;
+}
+<style>
+    span.k-widget.k-tooltip-validation {
+                    display:inline-flex;
+                    /*width: 160px;
+                    text-align: left;
+                    border: 0;
+                    padding: 0;*/
+                    margin-left: 5px;
+                    /*background:none;*/
+                    /*box-shadow: none;*/
+                    /*color: red;*/
+                }
+                
+                /*.k-tooltip-validation .k-warning {
+                    display: none;
+                }*/
+
+    input:invalid {
+        box-shadow: 0 0 5px 1px red;
+    }
+
+    input:focus:invalid {
+        outline: none;
+    }
+    form {
+        margin-top:0px;
+    }
+    textarea {
+        max-height:100px;
+        max-width:200px;
+        animation-play-state:running;
+        height:70px;
+        width:150px
+    }
+    .input_fields_wrap input {
+        vertical-align:middle;
+        margin-top:0px;        
+    
+    }
+
+    #one {
+        height:450px;
+    }
+    #two {
+        height:450px;
+    }
+
+    #bottom {
+        
+        width: 100%;
+        justify-content:center;
+        display:inline-flex;
+        align-items:center;
+        padding-top:25px;
+        position:relative;
+        
+
+    }
+    #last {
+   
+    }
+
+    .left {
+        width: 50%;
+        height: 90%;
+        float: left;
+    }
+
+    .right {
+        width: 50%;
+        height: 90%;
+        float: right;
+    }
+
+    .fieldlist {
+        margin: 0 0 -1em;
+        padding: 0;
+    }
+
+        .fieldlist li {
+            list-style: none;
+            padding-bottom: 1.5em;
+        }
+
+        .fieldlist label {
+            display: block;
+            padding-bottom: 0.3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            color: #444;
+        }
+</style>
+
+<form>
+    <div class="left" id="info">
+        <fieldset id="one">
+            <legend>Personal Details</legend>
+            <ul class="fieldlist">
+                <li>
+                    @Html.Label("Name")
+                    @Html.Kendo().TextBoxFor(model=>model.employee.NAME).Name("name").HtmlAttributes(new { style = "width: 50%;" })
+
+                </li>
+                <li>
+                    @Html.Label("Contact Number")
+                    @Html.Kendo().TextBoxFor(model=>model.employee.CONTACT_NUMBER).Name("contact").HtmlAttributes(new { @maxlength = "10", style = "width: 50%;" })
+                </li>
+                <li>
+                    @Html.Label("Email Id")
+                    @Html.Kendo().TextBoxFor(model => model.employee.EMAIL_ID).Name("email")@*.HtmlAttributes(new { style = "width: 50%;", type = "email", required = "required", data_email_msg = "Email format is not valid" })*@
+                </li>
+                <li>
+                    @Html.Label("Gender")
+                    <table>
+                        <tr>
+                            <td>
+                                @Html.Kendo().RadioButtonFor(model => model.employee.GENDER).Name("gender1").Value("M").Label("MALE").HtmlAttributes(new { @name = "gender", required = "required" })
+                            </td>
+                            <td>@Html.Kendo().RadioButtonFor(model => model.employee.GENDER).Name("gender2").Value("F").Label("FEMALE").HtmlAttributes(new { @name = "gender", required = "required" })</td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    @Html.Label("Date of birth")
+                    @Html.Kendo().DatePickerFor(model => model.employee.DATE_OF_BIRTH).Name("dob").Max(DateTime.Now).HtmlAttributes(new { placeholder = "MM/dd/yyyy" })
+                </li>
+                <li>
+                    @Html.Label("Address")
+                    @Html.TextAreaFor(model => model.employee.ADDRESS, new { @id = "address" })
+                </li>
+            </ul>
+        </fieldset>
+    </div>
+
+    <div class="right" id="data">
+        <fieldset id="two">
+            <legend>Hiring Details</legend>
+            <ul class="fieldlist">
+                <li>
+                    @Html.Label("Department")
+                    @(Html.Kendo().AutoCompleteFor(model=>model.employee.DEPARTMENT).Name("department")
+                         .DataTextField("NAME")
+                         .Placeholder("Enter department name")
+                         .BindTo(Model.departments)
+
+                         .HtmlAttributes(new { style = "width: 50%;" }))
+
+                    <input id="departmentid" type="number" hidden="hidden" />
+                </li>
+                <li>
+                    @Html.Label("Supervisor")
+                    @(Html.Kendo().DropDownListFor(model => model.employee.SUPERVISOR).Name("supervisor")
+                                         .DataTextField("NAME")
+                                         .DataValueField("ID")
+                                         .OptionLabel("--Select Supervisor--")
+                                         .BindTo(Model.supervisors)
+                                         .Animation(true)
+                                         .HtmlAttributes(new { style = "width: 50%;" }))
+
+                </li>
+                <li>
+                    @Html.Label("Designation")
+                    @(Html.Kendo().DropDownListFor(model => model.employee.DESIGNATION).Name("designation")
+                                         .DataTextField("NAME")
+                                         .DataValueField("ID")
+                                         .BindTo(Model.designations)
+                                         .OptionLabel("--Select Designation--")
+                                         .HtmlAttributes(new { style = "width: 50%;" }))
+                </li>
+                <li>
+                    @Html.Label("Experience")
+                    @(Html.Kendo().NumericTextBoxFor<double>(model => model.employee.EXPERIENCE).Name("experience").Spinners(false).Placeholder("0.0").Format("##.0 years").Min(0).Max(50))
+
+                </li>
+                
+                <li>
+                    @Html.Label("Skills")
+                </li>
+            </ul>
+            <div class="input_fields_wrap">
+                <div>
+                       <button id="addskill" class="add_field_button">Add</button> @Html.Kendo().TextBoxFor(model => model.employee.SKILLS).Name("skills")
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+    @*<div id="last">*@
+        <div id="bottom">
+            <ul class="fieldlist">
+                <li>
+                    @Html.Kendo().Button().Name("universalbutton").Content("Register")
+                    @Html.Kendo().Button().Name("cancelbutton").Content("Cancel")
+                </li>
+            </ul>
+        </div>
+    @*</div>*@
+    <div id="hide">
+        <div hidden="hidden">
+            @Html.Kendo().NumericTextBox().Name("identity").HtmlAttributes(new { style = "width: 50%;" }).Spinners(false)
+            @(Html.Kendo().TextBox().Name("insertby").Value("Shrinath"))
+            @(Html.Kendo().DateTimePicker().Name("inserton").Value(DateTime.Now))
+            @(Html.Kendo().TextBox().Name("updateby").Value("Shrinath"))
+            @(Html.Kendo().DateTimePicker().Name("updateon").Value(DateTime.Now))
+        </div>
+    </div>
+    </form>
+
+
+<script type="text/javascript">
+    
+
+
+    $("#department").change(function () {                                                           //function to restrict user from entering invalid input
+
+        var found = false;
+        var value = $(this).val();
+        var autocomplete = $("#department").data("kendoAutoComplete");
+        var data = autocomplete.dataSource.options.data;                                            //get list of available inputs.::found in the console
+
+        for (var idx = 0, length = data.length; idx < length; idx++) {                              //iterate through array to find a match
+            if (data[idx].NAME === value) {                                                         //strong type checking
+                found = true;                                                                       //match found ? proceed : Display alert or popup
+                $("#departmentid").val(data[idx].ID);                                               //get the ID bound to name and set it to a hidden field that will be used to insert in DB
+                break;
+            }
+        }
+
+        if (!found) {                                                                               //not found show alert and set blank
+            $(this).val("");
+            $("#departmentid").val("");                                                             //if invalid input, set id as null
+            alert("Custom values are not allowed");
+        }
+    });
+
+    $(document).ready(function () {//function to display possible inputs when mouse enters KAC
+        var autocompleteInput = $('.k-autocomplete input');
+        autocompleteInput.on('focus', function (e) {
+            var value = autocompleteInput.val();
+            var autocomplete = $("#department").data("kendoAutoComplete");
+            autocomplete.search(value);
+            // console.log(autocomplete.dataSource.options.data);
+        });
+    });
+
+    function Save(operationType) {
+   
+        var check = $("form").kendoValidator().data("kendoValidator");
+        var status = check.validate();
+        console.log(check)
+        alert(status);
+        if (!status) {
+            return;
+        }
+
+        var model = {
+            ADDRESS: $("#address").val(),
+            CONTACT_NUMBER: $("#contact").val(),
+            DATE_OF_BIRTH: $("#dob").val(),
+            DEPARTMENT_ID: $("#departmentid").val(),
+            DESIGNATION_ID: $("#designation").val(),
+            EMAIL_ID: $("#email").val(),
+            EXPERIENCE: $("#experience").val(),
+            GENDER: $('input[name=gender]:checked').val(),
+            ID: $("#identity").val(),
+            INSERTED_BY: $("#insertby").val(),
+            INSERTED_ON: $("#inserton").val(),
+            NAME: $("#name").val(),
+            SKILLS: GetSkills(), //$("#skills").val(),
+            SUPERVISOR_ID: $("#supervisor").val(),
+            UPDATED_BY: $("#updateby").val(),
+            UPDATED_ON: $("#updateon").val()
+        };
+       
+        var paste = JSON.stringify(model);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddNewEmployee","Home")',
+            dataType: "json",
+            contentType: 'application/json',
+            data: "{obj:" + paste + ",'operationType':'" + operationType + "'}",
+            success: function (result) {
+                if (result.isSuccess == true) {
+                    ClearFields();
+                    var wnd = $("#window").data("kendoWindow");
+                    wnd.close();
+                    Refresh_Fun();
+                    alert(result.message);
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert(error.responseText);
+                console.log(error);
+                console.log(xhr);
+                console.log(status);
+            }
+
+        });
+
+    }
+
+    function GetSkills() {
+        var list = "";
+
+        $("input[name=skills]").each(function () {
+
+            list += $(this).val() + ",";
+        });
+        list = list.slice(0, -1);
+        return list;
+    }
+
+    $(document).ready(function () {
+        var max_fields = 5; //maximum input boxes allowed
+        var wrapper = $(".input_fields_wrap"); //Fields wrapper
+        var add_button = $(".add_field_button"); //Add button ID
+
+        fieldCount = 1; //initlal text box count
+        $(add_button).click(function (e) { //on add input button click
+            e.preventDefault();
+
+            if (fieldCount == max_fields)
+            {
+                alert("Maximum limit reached for skills")
+                return false;
+            }
+            //if ($(".input_fields_wrap :nth-child(" + fieldCount + ")").children(".k-textbox").val() == "")      //check if previous field is filled
+            //{
+            //    alert("Please enter skill first")
+            //    return false;
+            //}
+            //$(wrapper).append('<div><input type="text" style="margin-left:3px;" name="skills" class="k-textbox"/>&nbsp;<button class="remove_field"><i class="far fa-times-circle"></i></button></div>');
+
+            if (fieldCount < max_fields) { //max input box allowed
+                $(wrapper).append('<div><input type="text" style="margin-left:43px;" name="skills" class="k-textbox" required="required" pattern="[a-zA-Z]+(\\s+[a-zA-Z]+)*"/>&nbsp;<button class="remove_field"><i class="far fa-times-circle"></i></button></div>');
+                $(".input_fields_wrap :last-child").prev().focus();
+                fieldCount++; //text box increment
+            }
+           
+        });
+
+        $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+            e.preventDefault();
+            //var rem = $(this).siblings(".k-textbox").val();
+            $(this).parent('div').remove();
+            fieldCount--;
+        });
+    });
+
+
+</script>

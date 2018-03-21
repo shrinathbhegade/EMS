@@ -1,0 +1,180 @@
+﻿@using KendoGridAssignment.Models
+@using Kendo.Mvc.UI
+@model DataModel
+
+@{
+    Layout = null;
+}
+<style>
+    .windowbutton {
+        
+        width:5px;
+    }
+    .fieldlist {
+        margin: 0 0 -1em;
+        padding: 0;
+    }
+
+        .fieldlist li {
+            list-style: none;
+            padding-bottom: 1em;
+        }
+
+        .fieldlist label {
+            display: block;
+            padding-bottom: 1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            color: #444;
+        }
+</style>
+
+
+<div class="demo-section k-content" id="main">
+<div class="demo-section k-content" >
+    <ul class="fieldlist">
+        <li hidden="hidden">
+            @Html.Kendo().NumericTextBox().Name("identity").HtmlAttributes(new { style = "width: 50%;" }).Spinners(false)
+        </li>
+        <li>
+            @Html.Label("Name")
+            @Html.Kendo().TextBox().Name("name").HtmlAttributes(new { style = "width: 50%;" })
+        </li>
+        <li>
+            @Html.Label("Designation")
+            @(Html.Kendo().DropDownList().Name("designation")
+                                         .DataTextField("NAME")
+                                         .DataValueField("ID")
+                                         .BindTo(Model.designations)
+                                         .OptionLabel("--Select Designation--")
+                                         .HtmlAttributes(new { style = "width: 50%;" }))
+        </li>
+        <li >
+            @Html.Label("Gender")
+            @Html.Kendo().RadioButton().Name("gender1").Value("M").Label("MALE").HtmlAttributes(new { @name = "gender" })
+            @Html.Kendo().RadioButton().Name("gender2").Value("F").Label("FEMALE").HtmlAttributes(new { @name = "gender" })
+        </li>
+
+        <li>
+            @Html.Label("Department")
+            @(Html.Kendo().DropDownList().Name("department")
+                                         .DataTextField("NAME")
+                                         .DataValueField("ID")
+                                         .OptionLabel("--Select Department--")
+                                         .BindTo(Model.departments)
+                                         .HtmlAttributes(new { style = "width: 50%;" }))
+            
+        </li>
+        <li>
+            @Html.Label("Experience")
+            @(Html.Kendo().NumericTextBox().Name("experience").Spinners(false).Decimals(1).Min(0).Max(60))
+                                          
+        </li>
+        <li>
+            @Html.Label("Skills")
+            @Html.Kendo().TextBox().Name("skills")
+        </li>
+        <li>
+            @Html.Label("Email Id")
+            @Html.Kendo().TextBox().Name("email")
+        </li>
+        <li>
+            @Html.Label("Contact Number")
+            @Html.Kendo().TextBox().Name("contact")
+        </li>
+        <li>
+            @Html.Label("Supervisor")
+            @(Html.Kendo().DropDownList().Name("supervisor")
+                                         .DataTextField("NAME")
+                                         .DataValueField("ID")
+                                         .OptionLabel("--Select Supervisor--")
+                                         .BindTo(Model.supervisors)
+                                         .Animation(true))
+
+        </li>
+        <li>
+            @Html.Label("Date of birth")
+            @Html.Kendo().DatePicker().Name("dob")
+        </li>
+        <li>
+            @Html.Label("Address")
+            @Html.TextArea("Address",new { @id="address"})
+        </li>
+    </ul>
+</div>
+<div class="demo-section k-content" hidden="hidden">
+    <ul class="fieldlist">
+        <li>
+            @Html.Label("Inserted By")
+            @(Html.Kendo().TextBox().Name("insertby").Value("Shrinath"))
+        </li>
+        <li hidden="hidden">
+            @Html.Label("Inserted on")
+            @Html.Kendo().DateTimePicker().Name("inserton").Value(DateTime.Now)
+        </li>
+    </ul>
+</div>
+<div class="demo-section k-content" id="up" hidden="hidden">
+    <ul class="fieldlist">
+        <li>
+            @Html.Label("Updated By")
+            @(Html.Kendo().TextBox().Name("updateby").Value("Shrinath"))
+        </li>
+        <li hidden="hidden">
+            @Html.Label("Updated on")
+            @Html.Kendo().DateTimePicker().Name("updateon").Value(DateTime.Now)
+        </li>
+    </ul>
+</div>
+<div class="demo-section k-content" id="bottom">
+    <ul class="fieldlist">
+        <li>
+            @Html.Kendo().Button().Name("universalbutton").Content("Register").HtmlAttributes(new { @class = "windowbutton" })
+        </li>
+    </ul>
+</div>
+</div>
+
+<script type="text/javascript">
+    function Save(operationType) {
+        console.log(operationType)
+        alert(operationType);
+        var model = {
+            ADDRESS: $("#address").val(),
+            CONTACT_NUMBER: $("#contact").val(),
+            DATE_OF_BIRTH: $("#dob").val(),
+            DEPARTMENT_ID: $("#department").val(),
+            DESIGNATION_ID: $("#designation").val(),
+            EMAIL_ID: $("#email").val(),
+            EXPERIENCE: $("#experience").val(),
+            GENDER: $('input[name=gender]:checked').val(),
+            ID: $("#identity").val(),
+            INSERTED_BY: $("#insertby").val(),
+            INSERTED_ON: $("#inserton").val(),
+            NAME: $("#name").val(),
+            SKILLS: $("#skills").val(),
+            SUPERVISOR_ID: $("#supervisor").val(),
+            UPDATED_BY: $("#updateby").val(),
+            UPDATED_ON:$("#updateon").val()
+        };
+        var wnd=$("#window").data("kendoWindow");
+        //wnd.content("Contents were reset")
+
+
+        //wnd.close();
+
+        var paste = JSON.stringify(model);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddNewEmployee")',
+            dataType: "json",
+            contentType: 'application/json',
+            data: "{obj:" + paste + ",'operationType':'" + operationType + "'}",
+            success: function (result) {
+               
+            }
+        });
+    }
+</script>
+

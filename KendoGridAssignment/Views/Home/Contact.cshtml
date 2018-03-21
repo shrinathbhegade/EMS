@@ -1,0 +1,67 @@
+﻿@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link href="http://cdn.kendostatic.com/2013.1.319/styles/kendo.common.min.css" rel="stylesheet">
+        <link id="themeFile" href="http://cdn.kendostatic.com/2013.1.319/styles/kendo.default.min.css" rel="stylesheet">
+        <script type="text/javascript">
+            $.holdReady(true);
+            var remoteJSONContent = null;
+            $.getJSON('@Url.Action("GetLookUp","Home")', function (data) {
+                remoteJSONContent = data;
+                $.holdReady(false);
+            });
+
+            $(document).ready(function () {
+                console.log(remoteJSONContent);
+            });
+
+        </script>
+    </head>
+
+    <body>
+        
+        <p>Select A Theme:</p>
+        <select data-role="dropdownlist" data-bind="events: { change: changeTheme }">
+            <option value="default">Default</option>
+            <option value="blueopal">BlueOpal</option>
+            <option value="silver">Silver</option>
+            <option value="metro">Metro</option>
+            <option value="metroblack">MetroBlack</option>
+            <option value="bootstrap">Bootstrap</option>
+            <option value="moonlight">Moonlight</option>
+            <option value="black">Black</option>
+            <option value="uniform">Uniform</option>
+        </select>
+
+        <h1>Sign Up Form</h1>
+        <form>
+            <dl>
+                <dt><label for="firstName">First Name:</label></dt>
+                <dd><input id="firstName" /></dd>
+                <dt><label for="lastName">Last Name:</label></dt>
+                <dd><input id="lastName" /></dd>
+                <dt><label for="state">State:</label></dt>
+                <dd>
+                    <input id="state" data-role="autocomplete" data-bind="source: states" data-text-field="name" data-value-field="abbreviation">
+                </dd>
+                <dt><label for="gender">Gender:</label></dt>
+                <dd>
+                    <select id="gender" data-role="dropdownlist">
+                        <option value="1">Female</option>
+                        <option value="2">Male</option>
+                    </select>
+                </dd>
+                <dt><label for="birthdate">Birthday:</label></dt>
+                <dd>
+                    <input data-role="datepicker" id="birthdate">
+                </dd>
+            </dl>
+            <button>Submit</button>
+        </form>
+      
+    </body>
+

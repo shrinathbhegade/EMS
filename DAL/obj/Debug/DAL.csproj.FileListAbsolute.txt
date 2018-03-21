@@ -1,0 +1,7 @@
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\DAL\bin\Debug\DAL.dll
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\DAL\bin\Debug\DAL.pdb
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\DAL\bin\Debug\ENTITY.dll
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\DAL\bin\Debug\ENTITY.pdb
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\DAL\obj\Debug\DAL.dll
+C:\Users\shrinath.bhegade\documents\visual studio 2015\Projects\KendoGridAssignment\DAL\obj\Debug\DAL.pdb
